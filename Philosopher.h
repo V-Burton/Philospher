@@ -6,7 +6,7 @@
 /*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:51:57 by vburton           #+#    #+#             */
-/*   Updated: 2023/04/04 19:03:01 by vburton          ###   ########.fr       */
+/*   Updated: 2023/04/05 18:12:54 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <sys/time.h>
+#include "libft/libft.h"
 
 typedef struct s_philo t_philo;
 typedef struct s_list t_list;
@@ -33,6 +34,7 @@ enum status
 
 typedef struct s_philo
 {
+	int 			indice;
 	struct timeval	timestamp;
 	int				right_hand;
 	int				left_hand;
@@ -47,13 +49,16 @@ typedef struct s_list
 
 typedef struct s_data
 {
-	int nb_philo;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int time_to_think;
-	int number_of_time_each_philosopher_must_eat;
+	int		nb_philo;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		time_to_think;
+	int		number_of_time_each_philosopher_must_eat;
+	long	start_time;
+	t_list	philos;
 }						t_data;
 
-### Init ###
-void	ft_fill_data(t_data *data, int argc, char **argv);
+/*** Init ***/
+
+void	ft_fill_data(t_data *data, int argc, char **argv, struct timeval start_time);
