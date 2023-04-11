@@ -6,7 +6,7 @@
 /*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/04/07 17:23:18 by vburton          ###   ########.fr       */
+/*   Updated: 2023/04/11 19:28:11 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	fill_data(t_data *data, int argc, char **argv);
 t_philo	*init_philo(t_philo *philo, int nb_philo);
 void	start_threads(t_philo *philo, int nb_philo);
 long	get_actual_time();
+void	*routine(void *philo);
 
 int	main(int argc, char **argv)
 {
@@ -65,16 +66,23 @@ t_philo	*init_philo(t_philo *philo, int nb_philo)
 void	start_threads(t_philo *philo, int nb_philo)
 {
 	int i;
-	int thread;
+	pthread_t thread[nb_philo];
 
 	i = 0;
 	while (i < nb_philo)
 	{
 		philo[i].t_last_meal = get_actual_time();
-		thread = pthread_create(&thread, NULL, &execution, )
+		pthread_create(&thread[i], NULL, &routine, (void*)&philo[i]);
+		i++;
+	}
+	i = 0;
+	while(i < nb_philo)
+	{
+		pthread_join(thread[i], NULL);
 		i++;
 	}
 }
+
 
 long get_actual_time()
 {
@@ -84,4 +92,13 @@ long get_actual_time()
 	gettimeofday(&tv, NULL);
 	time = tv.tv_sec * 1000000 + tv.tv_usec;
 	return (time);
+}
+
+void	*routine(void *philo)
+{
+	t_philo *philo_s;
+
+	philo_s = (t_philo *)philo;
+	printf("coucou je suis philo_id : %d\n", philo_s->id);
+	return (0);
 }

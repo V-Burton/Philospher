@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <pthread.h>
 #include "libft/libft.h"
 
 #	define ALIVE 1
