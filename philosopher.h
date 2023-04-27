@@ -6,47 +6,33 @@
 /*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/04/12 18:08:49 by vburton          ###   ########.fr       */
+/*   Updated: 2023/04/27 19:46:59 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <pthread.h>
-#include "libft/libft.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include "libft/libft.h"
 
-#	define ALIVE 1
-#	define THINKING 2
-#	define EATING 3
-#	define DEAD -1
-#	define HAS_FORK 1
-#	define NO_FORK 0
-#	define ODD 1
-#	define PAIR 0
-#	define AVAILABLE 1
-#	define UNAVAILABLE 0
+# define EMPTY 0
+# define FULL 1
+# define AVAILABLE 0
+# define USE 1
+# define PAIR 0
+# define ODD 1
 
-typedef struct	s_philo t_philo;
+typedef struct s_philo t_philo;
 
-typedef struct	s_philo
+typedef struct s_fork
 {
-	int id;
-	long t_start;
-	long t_now;
-	long t_last_meal;
 	int status;
-	int fork;
-	int left_hand;
-	int right_hand;
-	t_philo	*right_neighbor;
-	t_philo	*left_neighbor;
-	pthread_mutex_t mutex;
-	pthread_mutex_t main_mutex;
-}				t_philo;
+	pthread_mutex_t in_use;
+}			t_fork;
 
 typedef struct	s_data
 {
@@ -55,7 +41,30 @@ typedef struct	s_data
 	int		time_to_eat;
 	int		time_to_sleep;
 	int 	minimum_nb_of_time_each_philo_must_eat;
+	pthread_mutex_t death;
+	pthread_mutex_t write;
+	pthread_mutex_t start;
 	t_philo	*philosopher;
 }			t_data;
+
+struct s_philo
+{
+	int id;
+	int	is_odd;
+	int nb_meal;
+	int right_hand;
+	int left_hand;
+	long 	time_last_meal;
+	t_philo	*right_neighbor;
+	t_philo	*left_neighbor;
+	t_fork	*right_fork;
+	t_fork	*left_fork;
+	t_data	*data;
+};
+
+/*** utils ***/
+long get_actual_time();
+void	safe_printf(t_philo *philo, char *message);
+int is_odd(int i);
 
 #endif
