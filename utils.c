@@ -6,7 +6,7 @@
 /*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 18:13:05 by vburton           #+#    #+#             */
-/*   Updated: 2023/04/27 19:53:27 by vburton          ###   ########.fr       */
+/*   Updated: 2023/04/28 14:00:15 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 
 long get_actual_time()
 {
+	static long start_time;
 	struct	timeval tv;
 	long	time;
 
 	gettimeofday(&tv, NULL);
-	time = tv.tv_sec * 1000000 + tv.tv_usec;
-	return (time);
+	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	if (start_time == 0)
+		start_time = time;
+	return (time - start_time);
 }
 
 void	safe_printf(t_philo *philo, char *message)
 {
 	pthread_mutex_lock(&philo->data->write);
-	printf("Philosopher");
+	printf("%ld", get_actual_time());
 	printf(" %d ", philo->id);
 	printf("%s.\n", message);
 	pthread_mutex_unlock(&philo->data->write);

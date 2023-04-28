@@ -2,6 +2,7 @@
 NAME 	:= philosopher
 
 FILES 	:= main.c \
+			utils.c
 
 PATH_LIBFT	:= libft/
 
