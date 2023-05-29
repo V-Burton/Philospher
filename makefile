@@ -1,5 +1,5 @@
 ######### Name and Folder #########
-NAME 	:= philosopher
+NAME 	:= philo
 
 FILES 	:= main.c \
 			utils.c
@@ -18,6 +18,9 @@ ARFLAGS =    rcs
 
 SANITY    =    -fsanitize=address
 
+SANITY_THREAD    =    -fsanitize=thread
+
+
 RM 		:= 	rm -rf
 
 ########## Rules and dependency ###########
@@ -28,14 +31,12 @@ ODIR    =    ./OBJS/
 
 HDIR    =    ./
 
-SRCS    =    $(FILES)
-
 OBJS    =    $(addprefix $(ODIR), $(FILES:.c=.o))
 
 all    :     mklib $(ODIR) $(NAME)
 
 $(NAME)    :$(OBJS) ${PATH_LIBFT}libft.a
-			$(CC) $(CFLAGS) -o $(PATH_LIBFT)libft.a
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -lpthread
 
 $(ODIR)    :
 			mkdir $(ODIR)
@@ -45,18 +46,15 @@ $(ODIR)%.o   :    %.c $(HFILES)
 
 mklib:
 			make -j -C ${PATH_LIBFT}
-			make -j -C ${PATH_PRINTF}
 
 clean    :
 		-rm -rf $(OBJS)
 		-rm -rf $(ODIR)
 		make clean -C ${PATH_LIBFT}
-		make clean -C ${PATH_PRINTF}
 
 fclean    :    clean
 		-rm $(NAME)
 		make fclean -C ${PATH_LIBFT}
-		make fclean -C ${PATH_PRINTF}
 
 re    :
 	make fclean
@@ -66,4 +64,4 @@ clearm    :
 	clear
 	make
 
-.PHONY    :    all clean fclean re
+.PHONY    :    all clean fclean re    all clean fclean re

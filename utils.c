@@ -30,7 +30,7 @@ void	safe_printf(t_philo *philo, char *message)
 	pthread_mutex_lock(&philo->data->write);
 	printf("%ld", get_actual_time());
 	printf(" %d ", philo->id);
-	printf("%s.\n", message);
+	printf("%s\n", message);
 	pthread_mutex_unlock(&philo->data->write);
 }
 
