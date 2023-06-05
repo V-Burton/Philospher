@@ -36,7 +36,7 @@ OBJS    =    $(addprefix $(ODIR), $(FILES:.c=.o))
 all    :     mklib $(ODIR) $(NAME)
 
 $(NAME)    :$(OBJS) ${PATH_LIBFT}libft.a
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -lpthread
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -O3  -lpthread -fsanitize=thread
 
 $(ODIR)    :
 			mkdir $(ODIR)
