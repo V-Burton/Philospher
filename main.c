@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/05 16:54:58 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/05 19:00:59 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo);
 void	*routine(void *arg);
 void	clear_mutex(t_data *data, t_fork *forks, int nb_threads);
 int		check_death(t_philo	*philos, long T2D);
+void	join_philo(pthread_t *threads, t_data *data);
+void	clean_process(t_fork *fork, t_philo *philo, pthread_t *thread);
+
 
 int main(int argc, char **argv)
 {
@@ -37,10 +40,18 @@ int main(int argc, char **argv)
 	init_philo(&data, philo, fork);
 	creat_philo(threads, &data, philo);
 	check_death(philo, data.time_to_die);
+	join_philo(threads, &data);
 	clear_mutex(&data, fork, data.nb_philo);
+	clean_process(fork, philo, threads);
 	return (0);
 }
 
+void	clean_process(t_fork *fork, t_philo *philo, pthread_t *thread)
+{
+	free(fork);
+	free(philo);
+	free(thread);
+}
 
 void	fill_data(t_data *data, int argc, char **argv)
 {
@@ -93,6 +104,18 @@ void	init_philo(t_data *data, t_philo *philo, t_fork *fork)
 	}
 }
 
+void	join_philo(pthread_t *threads, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+}
+
 void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
 {
 	int i;
@@ -101,11 +124,6 @@ void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
 	while (i < data->nb_philo)
 	{
 		pthread_create(threads, NULL, routine, (void *)&philo[i]);
-		i++;
-	}
-	while (i < data->nb_philo)
-	{
-		pthread_join(threads[i], NULL);
 		i++;
 	}
 }
@@ -140,7 +158,7 @@ void	*routine(void *arg)
 	safe_printf(philo, MSG_THINK);
 	while (1)
 	{
-		if (philo->data->running == 0)
+		if (philo->data->running == 0 || philo->nb_meal == philo->data->minimum_nb_of_time_each_philo_must_eat)
 			return(0) ;
 		if (philo->is_odd == PAIR)
 		{
@@ -153,6 +171,7 @@ void	*routine(void *arg)
 			usleep(philo->data->time_to_eat);
 			pthread_mutex_unlock(&philo->left_fork->in_use);
 			pthread_mutex_unlock(&philo->right_fork->in_use);
+			philo->nb_meal++;
 			safe_printf(philo, MSG_SLEEP);
 			usleep(philo->data->time_to_sleep);
 			safe_printf(philo, MSG_THINK);
@@ -168,6 +187,7 @@ void	*routine(void *arg)
 			usleep(philo->data->time_to_eat);
 			pthread_mutex_unlock(&philo->right_fork->in_use);
 			pthread_mutex_unlock(&philo->left_fork->in_use);
+			philo->nb_meal++;
 			safe_printf(philo, MSG_SLEEP);
 			usleep(philo->data->time_to_sleep);
 			safe_printf(philo, MSG_THINK);
@@ -195,6 +215,12 @@ int		check_death(t_philo	*philos, long T2D)
 		time = get_actual_time() * 1000;
 		diff1 = time - philos[i].time_last_meal;
 		diff2 = time - philos[j].time_last_meal;
+		if (philos[i].is_odd == ODD && philos[i].nb_meal == \
+			philos->data->minimum_nb_of_time_each_philo_must_eat)
+		{
+			philos->data->running = 0;
+			return (1);
+		}
 		if (diff1 > T2D)
 		{
 			philos->data->running = 0;
@@ -211,7 +237,6 @@ int		check_death(t_philo	*philos, long T2D)
 			pthread_mutex_unlock(&philos->data->glob);
 			return (1);
 		}
-		pthread_mutex_unlock(&philos->data->glob);
 		i++;
 		j--;
 	}
