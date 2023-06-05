@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/05 13:14:33 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/05 16:54:58 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		philo[i].time_last_meal = get_actual_time();
 		pthread_create(threads, NULL, routine, (void *)&philo[i]);
 		i++;
 	}
@@ -137,10 +136,8 @@ void	*routine(void *arg)
 {
 	t_philo	*philo = (t_philo *)arg;
 
-
-	pthread_mutex_lock(&philo->data->glob);
-	printf("%ld %d is thinking\n", get_actual_time(), philo->id);
-	pthread_mutex_unlock(&philo->data->glob);
+	philo->time_last_meal = get_actual_time() * 1000;
+	safe_printf(philo, MSG_THINK);
 	while (1)
 	{
 		if (philo->data->running == 0)
@@ -187,13 +184,13 @@ int		check_death(t_philo	*philos, long T2D)
 	int	diff2;
 
 	i = 0;
-	j = philos->data->nb_philo;
+	j = philos->data->nb_philo - 1;
 	while (1)
 	{
 		if (j < i)
 		{
 			i = 0;
-			j = philos->data->nb_philo;
+			j = philos->data->nb_philo -1;
 		}
 		time = get_actual_time() * 1000;
 		diff1 = time - philos[i].time_last_meal;
@@ -214,6 +211,9 @@ int		check_death(t_philo	*philos, long T2D)
 			pthread_mutex_unlock(&philos->data->glob);
 			return (1);
 		}
+		pthread_mutex_unlock(&philos->data->glob);
+		i++;
+		j--;
 	}
 }
 
