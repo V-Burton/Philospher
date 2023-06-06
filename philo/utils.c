@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 18:13:05 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/06 11:42:51 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/06 11:47:48 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	safe_printf(t_philo *philo, char *message)
 
 	time = get_actual_time(philo->data->start_time);
 	pthread_mutex_lock(&philo->data->glob);
-	if (philo->data->running)
+	if (philo->data->run)
 	{
 		printf("%ld %d %s\n", time, philo->id, message);
 	}

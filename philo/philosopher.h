@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/06 11:30:58 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/06 20:19:48 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ typedef struct s_fork
 typedef struct s_data
 {
 	int				nb_philo;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
+	long			T2D;
+	long			T2E;
+	long			T2S;
 	long 			start_time;
-	int				minimum_nb_of_time_each_philo_must_eat;
-	int				running;
-	pthread_mutex_t	start;
-	pthread_mutex_t	death;
+	int				min_nb_meal;
+	int				run;
 	pthread_mutex_t	glob;
 	t_philo			*philosopher;
 }			t_data;
@@ -61,8 +59,6 @@ struct s_philo
 	int		is_odd;
 	int		nb_meal;
 	int		status;
-	int		right_hand;
-	int		left_hand;
 	long	actual_time;
 	long 	time_last_meal;
 	t_fork	*right_fork;
