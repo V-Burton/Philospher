@@ -2,7 +2,10 @@
 NAME 	:= philo
 
 FILES 	:= main.c \
-			utils.c
+			utils.c \
+			init_philo.c \
+			death_monitor.c \
+			clean_philo.c
 
 PATH_LIBFT	:= libft/
 
@@ -35,8 +38,9 @@ OBJS    =    $(addprefix $(ODIR), $(FILES:.c=.o))
 
 all    :     mklib $(ODIR) $(NAME)
 
-$(NAME)    :$(OBJS) ${PATH_LIBFT}libft.a
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -O3 -lpthread #-fsanitize=thread
+
+$(NAME)    :$(OBJS) ${PATH_LIBFT}libft.a makefile
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -g3 -lpthread #-fsanitize=thread
 
 $(ODIR)    :
 			mkdir $(ODIR)

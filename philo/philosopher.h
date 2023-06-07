@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/06 20:19:48 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:43:29 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ typedef struct s_fork
 typedef struct s_data
 {
 	int				nb_philo;
-	long			T2D;
-	long			T2E;
-	long			T2S;
-	long 			start_time;
+	long			t2d;
+	long			t2e;
+	long			t2s;
+	long			start_time;
 	int				min_nb_meal;
 	int				run;
 	pthread_mutex_t	glob;
@@ -60,11 +60,24 @@ struct s_philo
 	int		nb_meal;
 	int		status;
 	long	actual_time;
-	long 	time_last_meal;
+	long	time_last_meal;
 	t_fork	*right_fork;
 	t_fork	*left_fork;
 	t_data	*data;
 };
+
+/*** death_monitor ***/
+int		routine_death(t_philo	*philos, t_data *data);
+
+/*** init_philo ***/
+void	init_mutex(t_data *data, t_fork *fork);
+void	init_philo(t_data *data, t_philo *philo, t_fork *fork);
+void	fill_data(t_data *data, int argc, char **argv);
+
+/*** clean_philo ***/
+void	join_philo(pthread_t *threads, t_data *data);
+void	clean_process(t_fork *fork, t_philo *philo, pthread_t *thread);
+void	clear_mutex(t_data *data, t_fork *forks, int nb_threads);
 
 /*** utils ***/
 long	get_actual_time(long start_time);
