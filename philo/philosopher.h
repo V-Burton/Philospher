@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 10:43:29 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 13:57:41 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void	clear_mutex(t_data *data, t_fork *forks, int nb_threads);
 long	get_actual_time(long start_time);
 void	safe_printf(t_philo *philo, char *message);
 int		is_odd(int i);
+time_t	define_delta(long t2d, long t2s, long t2e);
 
 #endif

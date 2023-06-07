@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:32:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 10:52:02 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 13:18:14 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	check_full(t_philo	*philos, t_data *data)
 
 	i = 0;
 	j = data->nb_philo - 1;
-	count = 1;
-	while (i < j)
+	count = 0;
+	while (data->min_nb_meal >= 0 && i < j)
 	{
 		count = update_count(&philos[i], &philos[j], count, data->min_nb_meal);
 		i++;

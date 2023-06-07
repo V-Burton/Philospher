@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 18:13:05 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/06 11:47:48 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 14:00:35 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ int	is_odd(int i)
 	if (i % 2 == 0)
 		return (PAIR);
 	return (ODD);
+}
+
+time_t	define_delta(long t2d, long t2s, long t2e)
+{
+	time_t	delta;
+
+	delta = t2d - t2s - t2e;
+	if (delta < 0)
+		delta *= -1;
+	return (delta);
 }

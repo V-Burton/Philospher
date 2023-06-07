@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 10:41:35 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 14:01:56 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	main(int argc, char **argv)
 	init_philo(&data, philo, fork);
 	data.start_time = get_actual_time(0);
 	creat_philo(threads, &data, philo);
-	routine_death(philo, &data);
+	if (data.nb_philo > 1)
+		routine_death(philo, &data);
 	join_philo(threads, &data);
 	clear_mutex(&data, fork, data.nb_philo);
 	clean_process(fork, philo, threads);
@@ -79,7 +80,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->glob);
-	delta = philo->data->t2d - philo->data->t2s - philo->data->t2e;
+	delta = define_delta(philo->data->t2d, philo->data->t2s, philo->data->t2e);
 	philo->time_last_meal = get_actual_time(philo->data->start_time) * 1000;
 	pthread_mutex_unlock(&philo->data->glob);
 	safe_printf(philo, MSG_THINK);

@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:41:37 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 10:43:29 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 12:22:34 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	join_philo(pthread_t *threads, t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->nb_philo)
+	while (data->nb_philo > 1 && i < data->nb_philo)
 	{
 		pthread_join(threads[i], NULL);
 		i++;
