@@ -40,7 +40,7 @@ all    :     mklib $(ODIR) $(NAME)
 
 
 $(NAME)    :$(OBJS) ${PATH_LIBFT}libft.a makefile
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -g3 -lpthread #-fsanitize=thread
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(PATH_LIBFT)libft.a -g3 -lpthread -fsanitize=thread
 
 $(ODIR)    :
 			mkdir $(ODIR)

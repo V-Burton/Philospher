@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 13:57:41 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/12 18:22:53 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ typedef struct s_data
 	long			start_time;
 	int				min_nb_meal;
 	int				run;
+	int				error_mutex;
+	int				error_thread;
 	pthread_mutex_t	glob;
 	t_philo			*philosopher;
+	t_fork			*forks;
 }			t_data;
 
 struct s_philo
@@ -70,9 +73,9 @@ struct s_philo
 int		routine_death(t_philo	*philos, t_data *data);
 
 /*** init_philo ***/
-void	init_mutex(t_data *data, t_fork *fork);
+int		init_mutex(t_data *data, t_fork *fork);
 void	init_philo(t_data *data, t_philo *philo, t_fork *fork);
-void	fill_data(t_data *data, int argc, char **argv);
+void	fill_data(t_data *data, int argc, char **argv, t_fork *forks);
 
 /*** clean_philo ***/
 void	join_philo(pthread_t *threads, t_data *data);
@@ -84,5 +87,6 @@ long	get_actual_time(long start_time);
 void	safe_printf(t_philo *philo, char *message);
 int		is_odd(int i);
 time_t	define_delta(long t2d, long t2s, long t2e);
+int		panic(t_philo	*philo, pthread_t *threads, t_fork *fork, int index);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 17:58:13 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/12 18:54:56 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	*routine(void *arg)
 	safe_printf(philo, MSG_THINK);
 	while (1)
 	{
-		if (philo->is_odd == PAIR)
+		if (philo->is_odd == ODD)
 			usleep(delta * 0.33);
 		pthread_mutex_lock(&philo->data->glob);
 		if (philo->data->run == 0 || philo->nb_meal == philo->data->min_nb_meal)
@@ -79,7 +79,7 @@ static void	*routine(void *arg)
 	}
 }
 
-static void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
+static int	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
 {
 	int	i;
 
@@ -92,13 +92,18 @@ static void	creat_philo(pthread_t *threads, t_data *data, t_philo *philo)
 		usleep(data->t2d);
 		printf("%ld %d died\n", get_actual_time(data->start_time), 1);
 		pthread_mutex_unlock(&philo->data->glob);
-		return ;
+		return (1);
 	}
+	pthread_mutex_lock(&philo->data->glob);
 	while (i < data->nb_philo)
 	{
-		pthread_create(&threads[i], NULL, routine, (void *)&philo[i]);
+		if (pthread_create(&threads[i], NULL, routine, (void *)&philo[i]) != 0)
+			return (pthread_mutex_unlock(&philo->data->glob), \
+								data->run = 0, data->error_thread = i, 0);
 		i++;
 	}
+	pthread_mutex_unlock(&philo->data->glob);
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -110,14 +115,18 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		return (printf("wrong number of argument\n"));
-	fill_data(&data, argc, argv);
 	fork = malloc(sizeof(t_fork) * ft_atoi(argv[1]));
 	philo = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
-	threads = malloc(sizeof(pthread_t) * data.nb_philo);
-	init_mutex(&data, fork);
+	threads = malloc(sizeof(pthread_t) * ft_atoi(argv[1]));
+	if (!threads || !philo | !fork)
+		return (panic(philo, threads, fork, 0));
+	fill_data(&data, argc, argv, fork);
 	init_philo(&data, philo, fork);
+	if (!init_mutex(&data, fork))
+		return (panic(philo, threads, fork, 1));
 	data.start_time = get_actual_time(0);
-	creat_philo(threads, &data, philo);
+	if (!creat_philo(threads, &data, philo))
+		return (panic(philo, threads, fork, 2));
 	if (data.nb_philo > 1)
 		routine_death(philo, &data);
 	join_philo(threads, &data);

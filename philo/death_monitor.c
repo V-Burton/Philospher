@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:32:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/07 17:51:27 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/07 19:15:20 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ static int	check_full(t_philo	*philos, t_data *data)
 
 static int	check_full_n_death(t_philo	*philos, t_data *data, int i, int j)
 {
-	int	time;
-	int	diff1;
-	int	diff2;
+	long	time;
+	long	diff1;
+	long	diff2;
 
 	pthread_mutex_lock(&philos->data->glob);
 	time = get_actual_time(philos->data->start_time) * 1000;
@@ -89,7 +89,7 @@ int	routine_death(t_philo	*philos, t_data *data)
 	j = philos->data->nb_philo - 1;
 	while (1)
 	{
-		if (j <= i)
+		if (j < i)
 		{
 			i = 0;
 			j = philos->data->nb_philo -1;
