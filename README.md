@@ -30,3 +30,5 @@ To learn the basics of threads and mutex functions and how to use them, I strong
 - Note that using Valgrind on an executable compiled with the sanitizer, as well as both of these commands, will significantly slow down your program's performance. They are only meant for checking the correct execution of your code. Remember to remove them when you're done.
 
 Happy coding!
+
+**Edit** : Thanks to [Xavier](https://github.com/xaviecat), he shows me that i forgot to managed properly the case of a negative "time to death/sleep/think". Don't make the same mistake.
