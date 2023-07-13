@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:45:52 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/12 18:54:56 by vburton          ###   ########.fr       */
+/*   Updated: 2023/07/13 14:27:54 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,8 @@ int	main(int argc, char **argv)
 	fork = malloc(sizeof(t_fork) * ft_atoi(argv[1]));
 	philo = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 	threads = malloc(sizeof(pthread_t) * ft_atoi(argv[1]));
-	if (!threads || !philo | !fork)
+	if (!threads || !philo || !fork || fill_data(&data, argc, argv, fork))
 		return (panic(philo, threads, fork, 0));
-	fill_data(&data, argc, argv, fork);
 	init_philo(&data, philo, fork);
 	if (!init_mutex(&data, fork))
 		return (panic(philo, threads, fork, 1));

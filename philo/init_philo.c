@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_philo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:40:16 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/12 18:36:33 by vburton          ###   ########.fr       */
+/*   Updated: 2023/07/13 14:23:43 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	fill_data(t_data *data, int argc, char **argv, t_fork *fork)
+int	fill_data(t_data *data, int argc, char **argv, t_fork *fork)
 {
 	data->nb_philo = ft_atoi(argv[1]);
 	data->t2d = ft_atoi(argv[2]) * 1000;
@@ -27,6 +27,13 @@ void	fill_data(t_data *data, int argc, char **argv, t_fork *fork)
 	data->run = 1;
 	data->error_mutex = data->nb_philo;
 	data->error_thread = data->nb_philo;
+	if (data->nb_philo <= 0 || data->t2d <= 0 || data->t2e <= 0 || \
+						data->t2s <= 0 || (argc == 6 && data->min_nb_meal <= 0))
+	{
+		printf("Invalid parameter\n");
+		return (1);
+	}
+	return (0);
 }
 
 int	init_mutex(t_data *data, t_fork *fork)

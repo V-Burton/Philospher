@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 15:46:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/12 18:22:53 by vburton          ###   ########.fr       */
+/*   Updated: 2023/07/13 14:06:01 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int		routine_death(t_philo	*philos, t_data *data);
 
 /*** init_philo ***/
 int		init_mutex(t_data *data, t_fork *fork);
+int		fill_data(t_data *data, int argc, char **argv, t_fork *forks);
 void	init_philo(t_data *data, t_philo *philo, t_fork *fork);
-void	fill_data(t_data *data, int argc, char **argv, t_fork *forks);
 
 /*** clean_philo ***/
 void	join_philo(pthread_t *threads, t_data *data);
