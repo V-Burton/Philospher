@@ -31,4 +31,4 @@ To learn the basics of threads and mutex functions and how to use them, I strong
 
 Happy coding!
 
-**Edit** : Thanks to [Xavier](https://github.com/xaviecat), he shows me that i forgot to managed properly the case of a negative "time to death/sleep/think". Don't make the same mistake.
+**Fixed** : Thanks to [Xavier](https://github.com/xaviecat), he shows me that I forgot to managed properly the case of a negative "time to death/sleep/think or a negative/NULL number of philosophers".
